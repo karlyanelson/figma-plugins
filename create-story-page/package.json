@@ -1,15 +1,16 @@
 {
   "name": "create-story-page",
   "version": "1.0.0",
-  "description": "This plugin template uses Typescript. If you are familiar with Javascript, Typescript will look very familiar. In fact, valid Javascript code is already valid Typescript code.",
+  "description": "Plugin to create a figma page linked to a story card in Jira, Trello, etc",
   "main": "code.js",
-  "dependencies": {},
-  "devDependencies": {
-    "mocha": "^7.0.0"
-  },
   "scripts": {
-    "test": "mocha"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "keywords": [],
+  "author": "Karly Nelson",
+  "license": "MIT",
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.44.0"
+  },
+  "dependencies": {}
 }

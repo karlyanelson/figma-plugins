@@ -1,16 +1,16 @@
 {
   "name": "export-asset-tokens",
   "version": "4",
-  "description": "Export icons, illustrations and logos for the tokens system.",
+  "description": "Plugin to export assets as tokens for a design system.",
   "main": "code.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Karly Nelson",
+  "license": "MIT",
   "devDependencies": {
-    "@figma/plugin-typings": "^1.19.0"
+    "@figma/plugin-typings": "^1.44.0"
   },
   "dependencies": {}
 }

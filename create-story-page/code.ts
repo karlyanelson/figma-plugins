@@ -19,7 +19,7 @@ figma.ui.onmessage = async (msg) => {
   const colorInkLight = { r: 112 / 255, g: 112 / 255, b: 112 / 255 };
 
   if (msg.type === "create-story-page") {
-    // create a new page with the generated branch name
+    // create a new page with the generated story branch name
     const newPage = figma.createPage();
     newPage.name = `${msg.cardNumber} ${msg.branchTitle}`;
     figma.currentPage = newPage;
@@ -29,7 +29,7 @@ figma.ui.onmessage = async (msg) => {
     // create new title frame to put the text into
     const titleFrame = figma.createFrame();
     titleFrame.fills = [{ type: "SOLID", color: colorBgDark }];
-    titleFrame.name = "Branch Information";
+    titleFrame.name = "Story Information";
     titleFrame.layoutMode = "VERTICAL";
     titleFrame.counterAxisSizingMode = "AUTO";
     titleFrame.horizontalPadding = 128;
@@ -59,8 +59,6 @@ figma.ui.onmessage = async (msg) => {
 
     // add text to title frame
     function createHeaderText(titleFontFamily) {
-      console.log("iran");
-      console.log(titleFontFamily);
       // jira link
       const URL = figma.createText();
       URL.fontName = titleFontFamily;
@@ -102,7 +100,7 @@ figma.ui.onmessage = async (msg) => {
         figma.viewport.scrollAndZoomIntoView(nodes);
       })
       .catch((err) => {
-        console.log("Something has gone terribly wrong: " + err);
+        console.warn("Something has gone terribly wrong: " + err);
       });
   }
 

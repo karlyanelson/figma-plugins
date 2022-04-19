@@ -24,7 +24,7 @@ figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
     const colorInkBase = { r: 57 / 255, g: 56 / 255, b: 56 / 255 };
     const colorInkLight = { r: 112 / 255, g: 112 / 255, b: 112 / 255 };
     if (msg.type === "create-story-page") {
-        // create a new page with the generated branch name
+        // create a new page with the generated story branch name
         const newPage = figma.createPage();
         newPage.name = `${msg.cardNumber} ${msg.branchTitle}`;
         figma.currentPage = newPage;
@@ -32,7 +32,7 @@ figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
         // create new title frame to put the text into
         const titleFrame = figma.createFrame();
         titleFrame.fills = [{ type: "SOLID", color: colorBgDark }];
-        titleFrame.name = "Branch Information";
+        titleFrame.name = "Story Information";
         titleFrame.layoutMode = "VERTICAL";
         titleFrame.counterAxisSizingMode = "AUTO";
         titleFrame.horizontalPadding = 128;
@@ -56,8 +56,6 @@ figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
         };
         // add text to title frame
         function createHeaderText(titleFontFamily) {
-            console.log("iran");
-            console.log(titleFontFamily);
             // jira link
             const URL = figma.createText();
             URL.fontName = titleFontFamily;
@@ -96,7 +94,7 @@ figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
             figma.viewport.scrollAndZoomIntoView(nodes);
         })
             .catch((err) => {
-            console.log("Something has gone terribly wrong: " + err);
+            console.warn("Something has gone terribly wrong: " + err);
         });
     }
     // Make sure to close the plugin when you're done. Otherwise the plugin will
