@@ -1228,14 +1228,9 @@
     >
       <span class="visual-bell__msg">This field is required</span>
     </p>
-    <p
-      class="cardURLInputError-Invalid visual-bell visual-bell--error visual-bell--hidden"
-    >
-      <span class="visual-bell__msg">Invalid URL</span>
-    </p>
   </div>
   <div class="input-group">
-    <label class="section-title" for="branchTitleInput">Branch Title</label>
+    <label class="section-title" for="branchTitleInput">Story Title</label>
     <input type="text" class="input" id="branchTitleInput" value="" />
     <!-- Error -->
     <p
@@ -1299,9 +1294,6 @@
         const pattern = /\S+/;
         return pattern.test(str);
       },
-      isValidURL: function (str) {
-        return str.includes(urlBase);
-      },
     };
 
     const cardNumberInput = document.getElementById("cardNumberInput");
@@ -1324,14 +1316,7 @@
 
     // Card URL
     if (validation.isNotEmpty(cardURLInputValue)) {
-      if (validation.isValidURL(cardURLInputValue)) {
-        cardURL = cardURLInputValue;
-      } else {
-        document
-          .querySelector(".cardURLInputError-Invalid")
-          .classList.remove("visual-bell--hidden");
-        document.querySelector("#cardURLInput").classList.add("input-error");
-      }
+      cardURL = cardURLInputValue;
     } else {
       document
         .querySelector(".cardURLInputError-Empty")

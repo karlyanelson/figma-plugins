@@ -23,7 +23,7 @@ figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
     const colorBgDark = { r: 209 / 255, g: 209 / 255, b: 209 / 255 };
     const colorInkBase = { r: 57 / 255, g: 56 / 255, b: 56 / 255 };
     const colorInkLight = { r: 112 / 255, g: 112 / 255, b: 112 / 255 };
-    if (msg.type === 'create-story-page') {
+    if (msg.type === "create-story-page") {
         // create a new page with the generated branch name
         const newPage = figma.createPage();
         newPage.name = `${msg.cardNumber} ${msg.branchTitle}`;
@@ -31,7 +31,7 @@ figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
         const nodes = [];
         // create new title frame to put the text into
         const titleFrame = figma.createFrame();
-        titleFrame.fills = [{ type: 'SOLID', color: colorBgDark }];
+        titleFrame.fills = [{ type: "SOLID", color: colorBgDark }];
         titleFrame.name = "Branch Information";
         titleFrame.layoutMode = "VERTICAL";
         titleFrame.counterAxisSizingMode = "AUTO";
@@ -43,10 +43,12 @@ figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
         // check that Roboto is available, if not, use Helvetica, if Helvetica isn't available, use the first font available
         const checkForFonts = (fontList) => {
             return fontList.reduce((preferredFont, currentFont) => {
-                if (currentFont.fontName.family === "Roboto" && currentFont.fontName.style === "Medium") {
+                if (currentFont.fontName.family === "Roboto" &&
+                    currentFont.fontName.style === "Medium") {
                     return currentFont;
                 }
-                if (currentFont.fontName.family === "Helvetica" && currentFont.fontName.style === "Bold") {
+                if (currentFont.fontName.family === "Helvetica" &&
+                    currentFont.fontName.style === "Bold") {
                     return currentFont;
                 }
                 return preferredFont;
@@ -54,31 +56,32 @@ figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
         };
         // add text to title frame
         function createHeaderText(titleFontFamily) {
-            console.log('iran');
+            console.log("iran");
             console.log(titleFontFamily);
             // jira link
             const URL = figma.createText();
             URL.fontName = titleFontFamily;
             URL.characters = msg.cardURL;
             URL.fontSize = 100;
-            URL.fills = [{ type: 'SOLID', color: colorInkLight }];
+            URL.fills = [{ type: "SOLID", color: colorInkLight }];
             titleFrame.appendChild(URL);
             // branch title
             const branchTitle = figma.createText();
             branchTitle.fontName = titleFontFamily;
             branchTitle.characters = `(${msg.cardNumber}) ${msg.branchTitle}`;
             branchTitle.fontSize = 150;
-            branchTitle.fills = [{ type: 'SOLID', color: colorInkBase }];
+            branchTitle.fills = [{ type: "SOLID", color: colorInkBase }];
             titleFrame.appendChild(branchTitle);
             // created date and author
             const date = figma.createText();
             date.fontName = titleFontFamily;
             date.characters = "Created " + msg.curentDate + " by " + msg.branchAuthor;
-            date.fills = [{ type: 'SOLID', color: colorInkLight }];
+            date.fills = [{ type: "SOLID", color: colorInkLight }];
             date.fontSize = 100;
             titleFrame.appendChild(date);
         }
-        yield figma.listAvailableFontsAsync()
+        yield figma
+            .listAvailableFontsAsync()
             .then(checkForFonts)
             .then((fontName) => __awaiter(this, void 0, void 0, function* () {
             yield figma.loadFontAsync(fontName);
@@ -92,8 +95,8 @@ figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
             figma.currentPage.selection = nodes;
             figma.viewport.scrollAndZoomIntoView(nodes);
         })
-            .catch(err => {
-            console.log('Something has gone terribly wrong: ' + err);
+            .catch((err) => {
+            console.log("Something has gone terribly wrong: " + err);
         });
     }
     // Make sure to close the plugin when you're done. Otherwise the plugin will
