@@ -20,9 +20,9 @@ figma.showUI(__html__, { width: 400, height: 400 });
 figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
     // One way of distinguishing between different types of messages sent from
     // your HTML page is to use an object with a "type" property like this.
-    const colorBgDark = { r: 209 / 255, g: 209 / 255, b: 209 / 255 };
-    const colorInkBase = { r: 57 / 255, g: 56 / 255, b: 56 / 255 };
-    const colorInkLight = { r: 112 / 255, g: 112 / 255, b: 112 / 255 };
+    const colorBgDark = { r: 10 / 255, g: 10 / 255, b: 10 / 255 };
+    const colorInkBase = { r: 250 / 255, g: 250 / 255, b: 250 / 255 };
+    const colorInkLight = { r: 155 / 255, g: 155 / 255, b: 155 / 255 };
     if (msg.type === "create-story-page") {
         // create a new page with the generated story branch name
         const newPage = figma.createPage();
@@ -62,10 +62,12 @@ figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
             URL.characters = msg.cardURL;
             URL.fontSize = 100;
             URL.fills = [{ type: "SOLID", color: colorInkLight }];
-            URL.setRangeHyperlink(0, URL.characters.length, {
-                type: "URL",
-                value: msg.cardURL,
-            });
+            if (msg.urlIsValid) {
+                URL.setRangeHyperlink(0, URL.characters.length, {
+                    type: "URL",
+                    value: msg.cardURL,
+                });
+            }
             titleFrame.appendChild(URL);
             // branch title
             const branchTitle = figma.createText();

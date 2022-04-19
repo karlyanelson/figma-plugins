@@ -10,7 +10,7 @@
   "author": "Karly Nelson",
   "license": "MIT",
   "devDependencies": {
-    "@figma/plugin-typings": "^1.44.0"
-  },
-  "dependencies": {}
+    "@figma/plugin-typings": "^1.44.0",
+    "validator": "^13.7.0"
+  }
 }

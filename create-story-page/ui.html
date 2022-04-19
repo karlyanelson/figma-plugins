@@ -1228,6 +1228,13 @@
     >
       <span class="visual-bell__msg">This field is required</span>
     </p>
+    <p
+      class="cardURLInputError-Invalid visual-bell visual-bell--error visual-bell--hidden"
+    >
+      <span class="visual-bell__msg"
+        >Invalid URL - it must begin with "https://" or "http://"</span
+      >
+    </p>
   </div>
   <div class="input-group">
     <label class="section-title" for="branchTitleInput">Story Title</label>
@@ -1241,13 +1248,7 @@
   </div>
   <div class="input-group">
     <label class="section-title" for="branchAuthorInput">Author</label>
-    <input
-      type="text"
-      class="input"
-      id="branchAuthorInput"
-      placeholder="ex: 'JV' or 'Jen VanAnderson'"
-      value=""
-    />
+    <input type="text" class="input" id="branchAuthorInput" value="" />
     <!-- Error -->
     <p
       class="branchAuthorInputError-Empty visual-bell visual-bell--error visual-bell--hidden"
@@ -1265,6 +1266,7 @@
   </div>
 </form>
 
+<script src="https://unpkg.com/validator@latest/validator.min.js"></script>
 <script>
   document.querySelector("form").onsubmit = (e) => {
     const errors = document.querySelectorAll(".visual-bell--error");
@@ -1287,12 +1289,15 @@
 
     // Card Number & URL
 
-    const urlBase = "https://";
+    let urlIsValid = false;
 
     const validation = {
       isNotEmpty: function (str) {
         const pattern = /\S+/;
         return pattern.test(str);
+      },
+      isValidURL: function (str) {
+        return validator.isURL(str, { require_protocol: true });
       },
     };
 
@@ -1317,6 +1322,9 @@
     // Card URL
     if (validation.isNotEmpty(cardURLInputValue)) {
       cardURL = cardURLInputValue;
+      if (validation.isValidURL(cardURLInputValue)) {
+        urlIsValid = true;
+      }
     } else {
       document
         .querySelector(".cardURLInputError-Empty")
@@ -1369,6 +1377,7 @@
             cardNumber,
             branchTitle,
             cardURL,
+            urlIsValid,
             curentDate,
             branchAuthor,
           },
