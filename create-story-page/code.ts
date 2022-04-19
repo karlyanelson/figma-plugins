@@ -65,6 +65,10 @@ figma.ui.onmessage = async (msg) => {
       URL.characters = msg.cardURL;
       URL.fontSize = 100;
       URL.fills = [{ type: "SOLID", color: colorInkLight }];
+      URL.setRangeHyperlink(0, URL.characters.length, {
+        type: "URL",
+        value: msg.cardURL,
+      });
       titleFrame.appendChild(URL);
 
       // branch title
