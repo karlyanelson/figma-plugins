@@ -23,7 +23,7 @@ figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
     const colorBgDark = { r: 209 / 255, g: 209 / 255, b: 209 / 255 };
     const colorInkBase = { r: 57 / 255, g: 56 / 255, b: 56 / 255 };
     const colorInkLight = { r: 112 / 255, g: 112 / 255, b: 112 / 255 };
-    if (msg.type === 'create-branch-page') {
+    if (msg.type === 'create-story-page') {
         // create a new page with the generated branch name
         const newPage = figma.createPage();
         newPage.name = `${msg.cardNumber} ${msg.branchTitle}`;
