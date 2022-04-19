@@ -1,0 +1,15 @@
+{
+  "name": "create-branch-page",
+  "version": "1.0.0",
+  "description": "This plugin template uses Typescript. If you are familiar with Javascript, Typescript will look very familiar. In fact, valid Javascript code is already valid Typescript code.",
+  "main": "code.js",
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^7.0.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC"
+}

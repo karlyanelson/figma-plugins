@@ -1,0 +1,192 @@
+<style>
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes dash {
+    0% {
+      stroke-dasharray: 1, 150;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -35;
+    }
+    100% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -124;
+    }
+  }
+
+  body {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    text-align: center;
+  }
+
+  main {
+    padding: 2rem;
+  }
+
+  .processing {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .processing-txt {
+    font-weight: bold;
+    color: #2267a3;
+    text-align: center;
+  }
+
+  .error-txt {
+    color: #cc202e;
+    line-height: 1.4;
+  }
+
+  .spinner-container {
+    display: block;
+    position: relative;
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-bottom: 0.5rem;
+    flex: 0 0 auto;
+  }
+
+  .spinner .path {
+    stroke: #2267a3;
+    stroke-linecap: round;
+    animation: dash 1.5s ease-in-out infinite;
+  }
+
+  .spinner {
+    animation: rotate 2s linear infinite;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+
+<main>
+  <p class="processing hidden">
+    <span class="spinner-container">
+      <svg class="spinner" viewBox="0 0 50 50">
+        <circle
+          class="path"
+          cx="25"
+          cy="25"
+          r="20"
+          fill="none"
+          stroke-width="5"
+        ></circle>
+      </svg>
+    </span>
+    <span class="processing-txt">Processing...</span>
+  </p>
+  <button data-type="export-svg">SVG</button>
+  <button data-type="export-png">PNG</button>
+
+  <p class="error-txt hidden">
+    Please select a frame and run the plugin again.
+  </p>
+
+  <a id="download" hidden>Download</a>
+</main>
+
+<!-- Bring in JSZip from https://github.com/Stuk/jszip -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.2.2/jszip.min.js"></script>
+
+<script>
+  let messageType;
+
+  document.addEventListener("click", function (event) {
+    if (!event.target.matches("button")) {
+      return;
+    }
+
+    if (event.target.hasAttribute("data-type")) {
+      messageType = event.target.getAttribute("data-type");
+
+      document.querySelectorAll("button").forEach(function (btn) {
+        btn.disabled = true;
+      });
+
+      parent.postMessage({ pluginMessage: { type: messageType } }, "*");
+    }
+  });
+
+  onmessage = (event) => {
+    const assetList = event.data.pluginMessage;
+
+    if (assetList) {
+      document.querySelector(".processing").classList.remove("hidden");
+
+      const zip = new JSZip();
+
+      if (messageType === "export-svg") {
+        assetList.forEach((asset) => {
+          let svgCode = Uint8ArrayToString(asset.data);
+          const IDRegex = /id=\"(.*?)\"/gi;
+          const figmaGeneratedIDs = svgCode.match(IDRegex);
+
+          if (figmaGeneratedIDs) {
+            const IDs = figmaGeneratedIDs.map((x) => x.split('"')[1]);
+
+            let SVGcodeWithUniqueIDs = svgCode;
+
+            IDs.forEach((id) => {
+              let ptrn = new RegExp(`${id}`, "g");
+              SVGcodeWithUniqueIDs = SVGcodeWithUniqueIDs.replace(
+                ptrn,
+                `${asset.name}-${id}`
+              );
+            });
+
+            zip.file(`${asset.name}.svg`, SVGcodeWithUniqueIDs);
+          } else {
+            zip.file(`${asset.name}.svg`, svgCode);
+          }
+        });
+      } else {
+        assetList.forEach((asset) => {
+          let assetString = Uint8ArrayToString(asset.data);
+          zip.file(`${asset.name}.png`, assetString, { binary: true });
+        });
+      }
+
+      zip.generateAsync({ type: "blob" }).then(
+        function (blob) {
+          //set link to download blob of zip file
+          const url = URL.createObjectURL(blob);
+          const downloadLink = document.getElementById("download");
+          downloadLink.href = url;
+          downloadLink.setAttribute("download", "Tokens");
+          downloadLink.click();
+
+          parent.postMessage({ pluginMessage: { type: "close-ui" } }, "*");
+        },
+        function (err) {
+          console.warn(err);
+        }
+      );
+    } else {
+      document.querySelector(".error-txt").classList.remove("hidden");
+    }
+  };
+
+  const Uint8ArrayToString = function (arr) {
+    return arr.reduce((string, currentItem) => {
+      try {
+        return `${string}${String.fromCharCode(currentItem)}`;
+      } catch (_) {}
+
+      return string;
+    }, "");
+  };
+</script>

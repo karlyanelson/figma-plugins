@@ -1,0 +1,16 @@
+{
+  "name": "export-asset-tokens",
+  "version": "4",
+  "description": "Export icons, illustrations and logos for the tokens system.",
+  "main": "code.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.19.0"
+  },
+  "dependencies": {}
+}
